@@ -7,10 +7,9 @@ label_db = cell(1);
 fd_db = cell(1);
 for im = 1:numel(img_db_list);
     img_db{im} = logical(imread(img_db_list{im}));
-    img_db2{im} = imread(img_db_list{im});
     label_db{im} = get_label(img_db_list{im});
     disp(label_db{im}); 
-    [fd_db{im},~,~,~] = compute_fd(img_db{im},img_db2{im});
+    [fd_db{im},~,~,~] = compute_fd(img_db{im});
 end
 
 % importation des images de requÃªte dans une liste
@@ -23,8 +22,7 @@ for im = 1:numel(img_list)
    
     % calcul du descripteur de Fourier de l'image
     img = logical(imread(img_list{im}));
-    img2 = imread(img_list{im});
-    [fd,r,m,poly] = compute_fd(img,img2)
+    [fd,r,m,poly] = compute_fd(img)
        
     % calcul et tri des scores de distance aux descripteurs de la base
     for i = 1:length(fd_db)
@@ -51,14 +49,13 @@ for im = 1:numel(img_list)
 end
 end
 
-function [fd,r,m,poly] = compute_fd(img,img2)
+function [fd,r,m,poly] = compute_fd(img)
 N = 512; % Ã  modifier !!!
 M = 512; % Ã  modifier !!!
 h = size(img,1);
 w = size(img,2);
-[x,y,v]=find(img2>=1);
-X=x();
-m = [round(mean(x)) round(mean(y))]
+[x,y,v]=find(img);
+m = [round(mean(y)) round(mean(x))]
 %m = [w/2 h/2]; % Ã  modifier !!!
 %m = [ 110 120];
 

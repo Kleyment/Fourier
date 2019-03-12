@@ -51,8 +51,8 @@ end
 
 function [fd,r,m,poly] = compute_fd(img)
 % le nombre de points du contour
-N = 20; % A modifier !!!
-M = 512; % A modifier !!!
+N = 40;
+M = 20;
 h = size(img,1);
 w = size(img,2);
 [x,y,v]=find(img);
@@ -60,9 +60,9 @@ mx=round(mean(y));
 my=round(mean(x));
 m = [mx my];
 
-% crée des angles N de 0 à 2 Pi avec le même espace
+% creer des angles N de 0 a 2 Pi avec le meme espace
 t = linspace(0,2*pi,N);
-R = min(h,w)/2;
+%R = min(h,w)/2;
 
 poly = zeros(N, 2);
 %r = R*ones(1,N); % ÃƒÂ  modifier !!!
@@ -81,8 +81,8 @@ while ((tmpX>1 & tmpY>1) & (tmpX<w & tmpY<h))
    j=j+1;
 end
 
-% le nombre d'itérations que l'on a fait pour sortir du cercle sera le même
-% que le nombre d'itérations pour aller du bord jusqu'au centre
+% le nombre d'iterations que l'on a fait pour sortir du cercle sera le meme
+% que le nombre d'iterations pour aller du bord jusqu'au centre
 iterations=j;
 bordX=tmpX;
 bordY=tmpY;
@@ -92,7 +92,7 @@ for j = 1:iterations
    tmpX=round(bordX-j*cos(t(1,i)));
    tmpY=round(bordY-j*sin(t(1,i)));
    
-   % si le pixel est blanc on s'arrête et on sauvegarde tmpX et tmpY dans les
+   % si le pixel est blanc on s'arrete et on sauvegarde tmpX et tmpY dans les
    % contours de l'image
    if (img(tmpY,tmpX) == 1)
        dx=tmpX-mx;
@@ -104,7 +104,7 @@ for j = 1:iterations
    end
 end
 
-% si on n'a pas trouvé
+% si on n'a pas trouve
 if (j == iterations)
     dx=bordX-mx;
     dy=bordY-my;
@@ -114,5 +114,9 @@ if (j == iterations)
 end
 
 end
-fd = rand(1,M); % ÃƒÂ  modifier !!!
+fd = zeros(1,N);
+for i = 1 : M
+    R(1,i) = fft(r(1,i)); % ÃƒÂ  modifier !!!
+    fd(1,i) = R(1,i) / R(1,1);
+end
 end

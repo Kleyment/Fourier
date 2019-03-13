@@ -52,20 +52,18 @@ end
 function [fd,r,m,poly] = compute_fd(img)
 % le nombre de points du contour
 N = 40;
-M = 20;
+M = 40;
 h = size(img,1);
 w = size(img,2);
-[x,y,v]=find(img);
+[x,y]=find(img);
 mx=round(mean(y));
 my=round(mean(x));
 m = [mx my];
 
 % creer des angles N de 0 a 2 Pi avec le meme espace
 t = linspace(0,2*pi,N);
-%R = min(h,w)/2;
 
 poly = zeros(N, 2);
-%r = R*ones(1,N); % ÃƒÂ  modifier !!!
 r = zeros(1,N);
 for i = 1:N
 
@@ -115,8 +113,11 @@ end
 
 end
 fd = zeros(1,N);
+% On boucle sur M
 for i = 1 : M
-    R(1,i) = fft(r(1,i)); % ÃƒÂ  modifier !!!
+    % On a R la transformation de Fourier de r
+    R(1,i) = fft(r(1,i));
+    % Le vecteur fd form� par les M premiers coefficients de R(f)/R(1)
     fd(1,i) = R(1,i) / R(1,1);
 end
 end
